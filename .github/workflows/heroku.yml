@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: GitHub Action for Heroku
-      uses: actions/heroku@1.0.0
+    - uses: actions/checkout@v1
+    - name: Checkout repository
+    
     - name: Deploy app
       env:
         HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
