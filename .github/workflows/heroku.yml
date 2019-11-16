@@ -12,10 +12,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Checkout repository
-    
+    - name: GitHub Action for Heroku
+      uses: actions/heroku@1.0.0
     - name: Deploy app
       env:
         HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
-      run: git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/hidden-crag-93128.git origin/master:master
+      run: git push https://heroku@git.heroku.com/hidden-crag-93128.git/ origin/master:master
 
