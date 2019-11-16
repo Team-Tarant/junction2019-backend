@@ -3,12 +3,14 @@ import * as dotenv from 'dotenv'
 import { getDestinations, createDestination } from './services/destinationService'
 import * as bodyParser from 'body-parser'
 import { getTrips, addTrip, joinTrip } from './services/tripService'
+import * as cors from 'cors'
 dotenv.config()
 
 const PORT = process.env.PORT || 3000
 
 const app = express()
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/api/destinations', (req, res) => {
   getDestinations()
