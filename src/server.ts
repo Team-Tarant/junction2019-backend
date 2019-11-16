@@ -2,6 +2,7 @@ import * as express from 'express'
 import * as dotenv from 'dotenv'
 import { getDestinations, createDestination } from './services/destinationService'
 import * as bodyParser from 'body-parser'
+import { getTrips, addTrip } from './services/tripService'
 dotenv.config()
 
 const PORT = process.env.PORT || 3000
@@ -19,5 +20,17 @@ app.post('/api/destinations', (req, res) => {
     .then(() => res.status(201).send())
     .catch(err => res.status(err.status).json(err))
 })
+
+app.get('/api/trips/:destinationId', (req, res) => {
+  getTrips(req.params.destinationId)
+    .then(destinations => res.json(destinations))
+})
+
+app.post('/api/trips/:destinationId', (req, res) => {
+  addTrip({ ...req.body, destinationId: req.params.destinationId })
+    .then(() => res.status(201).send())
+    .catch(err => res.status(err.status).json(err))
+})
+
 
 app.listen(PORT, () => console.log("Server started on port", PORT))
