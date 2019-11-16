@@ -2,7 +2,7 @@ import * as express from 'express'
 import * as dotenv from 'dotenv'
 import { getDestinations, createDestination } from './services/destinationService'
 import * as bodyParser from 'body-parser'
-import { getTrips, addTrip } from './services/tripService'
+import { getTrips, addTrip, joinTrip } from './services/tripService'
 dotenv.config()
 
 const PORT = process.env.PORT || 3000
@@ -28,6 +28,12 @@ app.get('/api/trips/:destinationId', (req, res) => {
 
 app.post('/api/trips/:destinationId', (req, res) => {
   addTrip({ ...req.body, destinationId: req.params.destinationId })
+    .then(() => res.status(201).send())
+    .catch(err => res.status(err.status).json(err))
+})
+
+app.post('/api/trips/:tripId/join/', (req, res) => {
+  joinTrip({ ...req.body, tripId: req.params.tripId })
     .then(() => res.status(201).send())
     .catch(err => res.status(err.status).json(err))
 })
