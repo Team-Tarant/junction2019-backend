@@ -1,4 +1,6 @@
 import { getConnection } from '../database'
+import axios from 'axios'
+import * as querystring from 'querystring'
 import * as uuid from 'uuid/v4'
 
 interface TripDbo {
@@ -107,6 +109,7 @@ export const joinTrip = (tripjoin: TripJoinRequestObject) => {
     .then(connection =>
       connection.query('INSERT INTO tripjoin (id, "tripId", "participantName", "participantPhone") VALUES ($1,$2,$3,$4)',
       [uuid(), tripjoin.tripId, tripjoin.participantName, tripjoin.participantPhone]))
+      .then(() => sendNotificationSms(tripjoin))
       .catch(error => {
         console.error(error)
         return {
@@ -147,6 +150,30 @@ function toTrip(tripDbos: TripDbo[]): Trip[] {
       })
     }
   })
-
   return Array.from(map.values())
+}
+
+function sendNotificationSms(tripJoin: TripJoinRequestObject) {
+  return getConnection()
+    .then(conn => conn.query('SELECT * FROM trip WHERE id = $1', [tripJoin.tripId]))
+    .then(trips => {
+      if (trips.rows.length > 0) {
+        const {driverPhone, driverName} = trips.rows[0]
+        axios.post('https://api.46elks.com/a1/sms', querystring.stringify({
+          from: 'Seikkaily',
+          to: driverPhone,
+          message: `Hey ${driverName}! ${tripJoin.participantName} just joined your trip to Nuuksio. The phone number is ${tripJoin.participantPhone}`
+        }), {
+          auth: {
+            username: process.env.ELKS_USERNAME,
+            password: process.env.ELKS_PASSWORD
+          }
+        }).catch(e => console.error(e))
+      }
+    })
+    .then(() => [])
+    .catch(e => {
+      console.error(e)
+      return []
+    })
 }
