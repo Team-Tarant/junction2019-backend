@@ -1,10 +1,10 @@
-import * as express from 'express'
 import * as dotenv from 'dotenv'
+dotenv.config()
+import * as express from 'express'
 import { getDestinations, createDestination } from './services/destinationService'
 import * as bodyParser from 'body-parser'
 import { getTrips, addTrip, joinTrip } from './services/tripService'
 import * as cors from 'cors'
-dotenv.config()
 
 const PORT = process.env.PORT || 3000
 
