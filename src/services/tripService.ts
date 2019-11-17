@@ -49,7 +49,7 @@ interface TripJoinRequestObject {
 
 export const getTrips = (destination: string): Promise<Trip[]> =>
   getConnection()
-    .then(connection => connection.query('SELECT trip.*, tripjoin."participantName", tripjoin."participantPhone" FROM trip LEFT JOIN tripjoin ON (trip.id = tripjoin."tripId") WHERE "destinationId" = $1 AND "startToDestination" > NOW();', [destination]))
+    .then(connection => connection.query('SELECT trip.*, tripjoin."participantName", tripjoin."participantPhone" FROM trip LEFT JOIN tripjoin ON (trip.id = tripjoin."tripId") WHERE "destinationId" = $1 AND "startToDestination" > NOW() ORDER BY "startToDestination" ASC;', [destination]))
     .then(res => res.rows as TripDbo[])
     .then(toTrip)
     .catch(err => {

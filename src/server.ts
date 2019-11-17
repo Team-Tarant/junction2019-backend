@@ -5,6 +5,7 @@ import { getDestinations, createDestination } from './services/destinationServic
 import * as bodyParser from 'body-parser'
 import { getTrips, addTrip, joinTrip } from './services/tripService'
 import * as cors from 'cors'
+import { getVisitorEstimate } from './services/visitorEstimateService'
 
 const PORT = process.env.PORT || 3000
 
@@ -38,6 +39,10 @@ app.post('/api/trips/:tripId/join/', (req, res) => {
   joinTrip({ ...req.body, tripId: req.params.tripId })
     .then(() => res.status(201).send())
     .catch(err => res.status(err.status).json(err))
+})
+
+app.get('/api/visitors', (req, res) => {
+  getVisitorEstimate().then(data => res.json(data))
 })
 
 

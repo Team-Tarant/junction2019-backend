@@ -26,7 +26,7 @@ export const getDestinations = (): Promise<DestinationDbo[]> =>
 export const createDestination = (dest: DestinationRequestObject) => {
   if (dest.description !== undefined && dest.name !== undefined) {
     const id = uuid()
-    getConnection()
+    return getConnection()
       .then(connection =>
         connection
           .query('INSERT INTO destinations (id, name, description) VALUES ($1, $2, $3)',
