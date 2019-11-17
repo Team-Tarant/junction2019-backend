@@ -42,7 +42,7 @@ app.post('/api/trips/:tripId/join/', (req, res) => {
 })
 
 app.get('/api/visitors', (req, res) => {
-  getVisitorEstimate().then(data => res.json(data))
+  getVisitorEstimate(req.query.timestamp).then(data => res.json(data))
 })
 
 

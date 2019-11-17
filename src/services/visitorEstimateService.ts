@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const getVisitorEstimate = () =>
+export const getVisitorEstimate = (timestamp: string) =>
   axios
-    .get('http://163.172.138.216:5000/predict?timestamp=' + Math.floor(Date.now() / 1000))
+    .get('http://163.172.138.216:5000/predict?timestamp=' + timestamp)
     .then(({ data }) => data)
